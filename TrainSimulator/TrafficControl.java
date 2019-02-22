@@ -21,6 +21,7 @@ public class TrafficControl implements Runnable{
 		
 		placeTrain();
 		travel();
+		
 	}
 	
 	public synchronized void placeTrain() {
@@ -39,12 +40,10 @@ public class TrafficControl implements Runnable{
     /* move the train forward.
      * add the current position and update in map
      * */
-		while(currentPosition< Map.length-1) {
-			// move the train forward in each iteration
-			
+		while(currentPosition< Map.length) {
+			// move the train forward in each iteration			
 			this.trainSpeed = train.getSpeed();
-			int time = Map[currentPosition].getLength()/trainSpeed + Map[currentPosition].getStopTime() ;	
-			
+			int time = Map[currentPosition].getLength()/trainSpeed + Map[currentPosition].getStopTime() ;				
 			try {
 				Thread.sleep(time*1000);   
 			} catch (InterruptedException e) {
@@ -52,14 +51,23 @@ public class TrafficControl implements Runnable{
 			}	
 			
 			// because the position 8 may be replaced by other trains.
-			int index = Map[currentPosition].getTrackCondition().indexOf(train.getTrainID()+","); 
-			Map[currentPosition].getTrackCondition().remove(index); //remove from current position
-			
+			deleteFromCurrentStation();
 			currentPosition++;
 			
-			Map[currentPosition].getTrackCondition().add(8, train.getTrainID()+","); //move to next position
+			if(currentPosition< Map.length) {
+				moveToNextStatin();
+			}	
 
 		}
+//		deleteTrain();
+	}
+	
+	public void deleteFromCurrentStation() {
+		int index = Map[currentPosition].getTrackCondition().indexOf(train.getTrainID()+","); 
+		Map[currentPosition].getTrackCondition().remove(index); //remove from current position
+	}
+	public void moveToNextStatin() {
+		Map[currentPosition].getTrackCondition().add(8, train.getTrainID()+","); //move to next position
 	}
 
 }

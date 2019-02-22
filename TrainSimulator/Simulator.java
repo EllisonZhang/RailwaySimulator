@@ -29,11 +29,11 @@ public class Simulator {
 //		displayThread.start();		
 		
 //**** simulation part --- train threads ******//
-		int test = 6;	
-		Thread[] threads = new Thread[test];
-		Train[] trains = new Train[test];
+		int numberOfTrains = 6;	
+		Thread[] threads = new Thread[numberOfTrains];
+		Train[] trains = new Train[numberOfTrains];
 		
-		for (int i=0;i<test;i++) {
+		for (int i=0;i<numberOfTrains;i++) {
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
