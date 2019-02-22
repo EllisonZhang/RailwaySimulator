@@ -3,19 +3,29 @@ import java.util.ArrayList;
 public class Station implements TrackSegment {
 	
 	private final int length = 100;
-
-    private String name = "Station";
-	
-	//use this to represent the track 
-	private ArrayList<String> trackCondition = new ArrayList<String>();
+	private final int stopTime = 5;
+	private int stationCapacity = 1;
+	private int currentTrainAmount = 0;
+	private boolean available = true;
+	private String name = "Station";		
+	private ArrayList<String> trackCondition = new ArrayList<String>(); //use this to represent the track 
     private String condition;
     
    
-	public Station(String stationName) {
+	public Station(String stationName, int stationCapacity) {
 		this.name = stationName;
+		this.stationCapacity = stationCapacity;
     	setUpTrack();
     	setCondition();
     }
+
+	public int getStationCapacity() {
+		return stationCapacity;
+	}
+
+	public void setStationCapacity(int stationCapacity) {
+		this.stationCapacity = stationCapacity;
+	}
 
 	public void setUpTrack() {
 		trackCondition.add("|");
@@ -43,6 +53,12 @@ public class Station implements TrackSegment {
 	
 	/*All the getters and setters below;
 	 * */
+	public boolean isAvailable() {
+		return available;
+	}
+	public int getStopTime() {
+		return stopTime;
+	}
 	public ArrayList<String> getTrackCondition() {
 		return trackCondition;
 	}
@@ -66,6 +82,13 @@ public class Station implements TrackSegment {
 		for(int i=0;i<trackCondition.size();i++) {
 			condition += trackCondition.get(i);
 		}
+	}
+	public int getCurrentTrainAmount() {
+		return currentTrainAmount;
+	}
+
+	public void setCurrentcurrentTrainAmount(int currentTrainAmount) {
+		this.currentTrainAmount = currentTrainAmount;
 	}
 	
 }

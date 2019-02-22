@@ -8,9 +8,9 @@ public class TrafficControl implements Runnable{
 	
 	private TrackSegment[] Map ;
 	private Train train;
-	private TrackSegment trackSegment;
 	Random random = new Random();
-     
+    private int currentPosition = 0; // the position in Map[]. 
+    private int trainSpeed;
 	
 	public TrafficControl(TrackSegment[] map, Train train) {
 		this.Map = map;
@@ -20,19 +20,46 @@ public class TrafficControl implements Runnable{
 	public void run() {
 		
 		placeTrain();
-		
+		travel();
 	}
 	
-	public void placeTrain() {
+	public synchronized void placeTrain() {
 		
 	    int number = random.nextInt(2);
+	    // random chose the start point; 
 	    if(number == 0 ) {
-	    	 Map[0].getTrackCondition().add(8, train.getTrainID()+"");
+	    	 Map[0].getTrackCondition().add(8, train.getTrainID()+",");
 	    }else {
-	    	 Map[1].getTrackCondition().add(8, train.getTrainID()+"");
+	    	 Map[1].getTrackCondition().add(8, train.getTrainID()+",");
 	    }
-  
-	        
+	    currentPosition = number; // update the  current position
+	}
+	
+	public void travel() {
+    /* move the train forward.
+     * add the current position and update in map
+     * */
+		while(currentPosition< Map.length-1) {
+			// move the train forward in each iteration
+			
+			this.trainSpeed = train.getSpeed();
+			int time = Map[currentPosition].getLength()/trainSpeed + Map[currentPosition].getStopTime() ;	
+			
+			try {
+				Thread.sleep(time*1000);   
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}	
+			
+			// because the position 8 may be replaced by other trains.
+			int index = Map[currentPosition].getTrackCondition().indexOf(train.getTrainID()+","); 
+			Map[currentPosition].getTrackCondition().remove(index); //remove from current position
+			
+			currentPosition++;
+			
+			Map[currentPosition].getTrackCondition().add(8, train.getTrainID()+","); //move to next position
+
+		}
 	}
 
 }

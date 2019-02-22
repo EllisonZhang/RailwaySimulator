@@ -1,3 +1,4 @@
+import java.util.Random;
 
 public class Simulator {
 	
@@ -6,42 +7,65 @@ public class Simulator {
 	
 	private static TrackSegment[] Map = new TrackSegment[7];
 	private static String currentMap;
-	private TrainFactory trainFactory = new TrainFactory();
+	private static TrainFactory trainFactory = new TrainFactory();
 
 	public static void main(String[] args) {
 	    
-		// initialise
+//***** initialise
 		generateMapElement();
 		currentMap = currentMap();
+		System.out.println(currentMap);
+	
+//**** 	produce train thread *****//
 		
+	
+		Thread creatTrainThread = new Thread(trainFactory);
+		creatTrainThread.start();
 		
+////***** display section --- main thread ******//
+//		Simulator simulator = new Simulator();
+//		Display display = simulator.new Display();
+//		Thread displayThread = new Thread(display);
+//		displayThread.start();		
 		
-		// simulation part
-		ExpressTrain testTrain = new ExpressTrain(16); 
-		TrafficControl controller = new TrafficControl (Map,testTrain);
-		Thread t = new Thread(controller);
-		t.start();
-		try {
-			t.join();
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+//**** simulation part --- train threads ******//
+		int test = 6;	
+		Thread[] threads = new Thread[test];
+		Train[] trains = new Train[test];
+		
+		for (int i=0;i<test;i++) {
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			trains[i] = trainFactory.getCurrentTrain(); 
+			threads[i] = new Thread(new TrafficControl (Map,trains[i]));
+			threads[i].start();
+			System.out.println("Train Speed is:" + trains[i].getSpeed());
 		}
+		
+//		Train testTrain1 = trainFactory.getCurrentTrain(); 
+//		TrafficControl controller1 = new TrafficControl (Map,testTrain1);
+//		Thread t1 = new Thread(controller1);
+//		t1.start();
+//		System.out.println(testTrain1.getSpeed());
 		
 	   
 		
-		// display part
+//***** display section --- main thread ******//
+//		Simulator simulator = new Simulator();
+//		Display display = simulator.new Display();
+//		Thread displayThread = new Thread(display);
+//		displayThread.start();
 		while(true) {
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-			
-//			System.out.println(Map[0].getTrackCondition().get(8));
-//			System.out.println(Map[1].getTrackCondition().get(8)); 
-			
+			}			
 			currentMap = currentMap();
 			System.out.println(currentMap);
 		}
@@ -51,7 +75,22 @@ public class Simulator {
 	
 	
 	
-	
+	class Display implements Runnable {
+			
+		public void run() {
+			while(true) {
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}			
+				currentMap = currentMap();
+				System.out.println(currentMap);
+			}
+			
+		}
+	}
 	
 	
 	
@@ -63,10 +102,10 @@ public class Simulator {
 		for(int i=1; i<Map.length;i+=2) {
 			Map[i] = new Track();
 		}
-		Map[0] = new Station("Glasgow");
-		Map[2] = new Station("Stirling");
-		Map[4] = new Station("Perth");
-		Map[6] = new Station("Inverness");
+		Map[0] = new Station("Glasgow",3);
+		Map[2] = new Station("Stirling",2);
+		Map[4] = new Station("Perth",2);
+		Map[6] = new Station("Inverness",3);
 	}
 	
 	public static String currentMap() {

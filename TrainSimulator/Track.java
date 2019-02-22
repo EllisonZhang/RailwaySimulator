@@ -3,6 +3,9 @@ import java.util.ArrayList;
 public class Track implements TrackSegment{
 	
 	private final int length = 1000;
+	private final int stopTime = 0; // doesn't stop on the track!
+	
+	
 	private String name = "track";
 	
 	//use this to represent the track 
@@ -40,6 +43,10 @@ public class Track implements TrackSegment{
 	
 	/*All the getters and setters below;
 	 * */
+	public int getStopTime() {
+		return stopTime;
+	}
+
 	public ArrayList<String> getTrackCondition() {
 		return trackCondition;
 	}

@@ -7,5 +7,6 @@ public interface TrackSegment{
 	public ArrayList<String> getTrackCondition();
 //	public void insertTrain(int ID);
 //	public void deleteTrain(int ID);
-
+	public int getLength();
+	public int getStopTime();
 }

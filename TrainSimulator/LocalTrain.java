@@ -1,7 +1,7 @@
 
 public class LocalTrain extends Train{
 	
-private final int speed = 10;
+private final int speed = 200;
 	
 	public LocalTrain(int trainID) {
 		super(trainID);

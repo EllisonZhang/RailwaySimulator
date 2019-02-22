@@ -7,12 +7,12 @@ public abstract class Train {
 		setTrainID(trainID);
 	}
 	
-	public synchronized int getTrainID() {
+	public int getTrainID() {
 		return trainID;
 	}
-	public synchronized void setTrainID(int trainID) {
+	public void setTrainID(int trainID) {
 		this.trainID = trainID;
 	} 
+	public abstract int getSpeed();
 	
-
 }
