@@ -4,72 +4,42 @@ public class Simulator {
 	
     // station objects and track objects are all stored in Map[] Array.
 	// both of them implements TrackSegment interface;
-	
 	private static TrackSegment[] Map = new TrackSegment[7];
 	private static String currentMap;
-	private static TrainFactory trainFactory = new TrainFactory();
+	private static TrainFactory trainFactory = new TrainFactory(Map);
 
 	public static void main(String[] args) {
 	    
 //***** initialise
 		generateMapElement();
-		currentMap = currentMap();
+		currentMap();
 		System.out.println(currentMap);
+		Simulator simulator = new Simulator();
+		Display display = simulator.new Display();
+		Thread displayThread = new Thread(display);
+		displayThread.start();
 	
-//**** 	produce train thread *****//
-		
-	
+//**** 	produce train thread *****//	
 		Thread creatTrainThread = new Thread(trainFactory);
-		creatTrainThread.start();
-		
-////***** display section --- main thread ******//
-//		Simulator simulator = new Simulator();
-//		Display display = simulator.new Display();
-//		Thread displayThread = new Thread(display);
-//		displayThread.start();		
-		
+		creatTrainThread.start();	
+
 //**** simulation part --- train threads ******//
-		int numberOfTrains = 6;	
+		int numberOfTrains = 20;	
 		Thread[] threads = new Thread[numberOfTrains];
 		Train[] trains = new Train[numberOfTrains];
-		
+		String[] names = {"a","b","c","d","e"};
 		for (int i=0;i<numberOfTrains;i++) {
 			try {
-				Thread.sleep(10);
+				Thread.sleep(3000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			trains[i] = trainFactory.getCurrentTrain(); 
-			threads[i] = new Thread(new TrafficControl (Map,trains[i]));
+			threads[i] = new Thread(trains[i]);
 			threads[i].start();
-			System.out.println("Train Speed is:" + trains[i].getSpeed());
+//			System.out.println("New Train comming!! The Speed is:" + trains[i].getSpeed());
 		}
-		
-//		Train testTrain1 = trainFactory.getCurrentTrain(); 
-//		TrafficControl controller1 = new TrafficControl (Map,testTrain1);
-//		Thread t1 = new Thread(controller1);
-//		t1.start();
-//		System.out.println(testTrain1.getSpeed());
-		
-	   
-		
-//***** display section --- main thread ******//
-//		Simulator simulator = new Simulator();
-//		Display display = simulator.new Display();
-//		Thread displayThread = new Thread(display);
-//		displayThread.start();
-		while(true) {
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}			
-			currentMap = currentMap();
-			System.out.println(currentMap);
-		}
-		
 
 	}
 	
@@ -84,9 +54,11 @@ public class Simulator {
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}			
-				currentMap = currentMap();
+				}	
+				
+				currentMap();
 				System.out.println(currentMap);
+				
 			}
 			
 		}
@@ -108,7 +80,7 @@ public class Simulator {
 		Map[6] = new Station("Inverness",3);
 	}
 	
-	public static String currentMap() {
+	public static void currentMap() {
 		
 		//print this to draw the current condition
 		currentMap = "";  //refresh Map first
@@ -118,7 +90,6 @@ public class Simulator {
 			
 		}
 		
-		return currentMap;
 	}
 	
 

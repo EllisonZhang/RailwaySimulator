@@ -6,21 +6,22 @@ public class TrainFactory implements Runnable{
 	private int ID;
 	private Train currentTrain;
 	Random random = new Random();
-	
-	public TrainFactory() {
+	private TrackSegment[] Map ;
+	public TrainFactory(TrackSegment[] Map) {
 		createTrain(random.nextInt(2),random.nextInt(20));
+		this.Map = Map;
 	}
 	
 	public void run() {
 		
 		while(true) {
 			try {
-				Thread.sleep(10);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			createTrain(random.nextInt(2),random.nextInt(20));
+			createTrain(random.nextInt(2),random.nextInt(200));
 		}		
 		
 	}
@@ -33,10 +34,10 @@ public class TrainFactory implements Runnable{
 		Train train = null;
 		if(instruction==1) {
 			
-			train = new LocalTrain(ID); 
+			train = new Train(ID,Map,10); 
 			
 		}else if (instruction==0){
-			train = new ExpressTrain(ID); 
+			train = new Train(ID,Map,500); 
 		}
 		
 		currentTrain= train;
