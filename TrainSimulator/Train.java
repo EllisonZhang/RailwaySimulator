@@ -54,22 +54,25 @@ public class Train implements Runnable {
 					e.printStackTrace();
 				}	
 				
-				deleteFromCurrentStation();
+				
 			
 				currentPosition++; // ready to move!!! 
-									
+							
 				if(currentPosition< Map.length) {
-
-					moveToNextStatin();
+					moveToNextStatin();	
+					
+					
 				}
-
+				if(currentPosition<= Map.length)
+					deleteFromCurrentStation();
 			}
 
 		}
 	
 	
 	public void deleteFromCurrentStation() {
-		Map[currentPosition].removeTrain(trainName); // remove train number from station
+		int pos = currentPosition - 1;
+		Map[pos].removeTrain(trainName); // remove train number from station
 	}
 	
 	public void moveToNextStatin() {

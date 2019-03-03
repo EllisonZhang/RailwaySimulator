@@ -24,7 +24,7 @@ public class Simulator {
 		creatTrainThread.start();	
 
 //**** simulation part --- train threads ******//
-		int numberOfTrains = 20;	
+		int numberOfTrains = 2000;	
 		Thread[] threads = new Thread[numberOfTrains];
 		Train[] trains = new Train[numberOfTrains];
 		String[] names = {"a","b","c","d","e"};
@@ -72,12 +72,14 @@ public class Simulator {
         // reference stored in trackArray[] & StationArray[]
 		
 		for(int i=1; i<Map.length;i+=2) {
-			Map[i] = new Track();
+			Map[i] = new Track();	
 		}
 		Map[0] = new Station("Glasgow",3);
 		Map[2] = new Station("Stirling",2);
 		Map[4] = new Station("Perth",2);
 		Map[6] = new Station("Inverness",3);
+		
+		
 	}
 	
 	public static void currentMap() {
