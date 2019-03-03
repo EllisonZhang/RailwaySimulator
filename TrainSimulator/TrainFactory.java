@@ -34,7 +34,7 @@ public class TrainFactory implements Runnable{
 		Train train = null;
 		if(instruction==1) {
 			
-			train = new Train(ID,Map,10); 
+			train = new Train(ID,Map,200); 
 			
 		}else if (instruction==0){
 			train = new Train(ID,Map,500); 
