@@ -11,3 +11,7 @@ public interface TrackSegment{
 	public void addTrain(String trainName);
 	public boolean isAvailable();
 }
+
+
+
+
